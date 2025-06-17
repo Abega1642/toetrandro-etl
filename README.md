@@ -1,4 +1,4 @@
-# 🌤️ Toetrandro -etl– Travel Recommendation Based on Climate
+# 🌤️ Toetrandro -etl - Travel Recommendation Based on Climate
 
 ## 🧭 Project Overview
 
@@ -6,7 +6,7 @@
 collect, process, model, and visualize weather data to answer a real-world
 question:
 
-> 🗺️ *W_en is the best time to visit a city based on weather conditions?*_
+> 🗺️ *W_hen is the best time to visit a city based on weather conditions?*__
 
 The project is built using:
 
@@ -21,11 +21,11 @@ The project is built using:
 ## 🎯 Project Goals
 
 - 📦 Automate data extraction, transformation, and loading (ETL) using Apache 
- Airflow
+  Airflow
 - 🌍 Combine historical and real-time weather data
 - 🧼 Clean and model data to extract meaningful indicators
 - 📊 Build an interactive dashboard to recommend the best travel periods based 
- on weather
+  on weather
 
 ---
 
@@ -60,7 +60,7 @@ The project is built using:
 - 📡 **Daily automated extraction** of real-time weather data
 - 📂 **Historical dataset integration** from various sources (CSV, APIs, etc.)
 - 🔄 **ETL Pipeline** structured into clear Airflow tasks: `extract`, `clean`, 
- `merge`, `save`
+  `merge`, `save`
 - 🧽 **Data Cleaning & Normalization** for consistency across sources
 - 🌟 **Star or Snowflake Schema Modeling** for reporting-friendly structure
 - 📊 **Interactive Dashboard** with dynamic filters (city, month, metric…)
