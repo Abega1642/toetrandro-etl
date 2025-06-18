@@ -1,4 +1,4 @@
-# 🌤️ Toetrandro -etl - Travel Recommendation Based on Climate
+# 🌤️ Toetrandro-etl -- Travel Recommendation Based on Climate
 
 ## 🧭 Project Overview
 
@@ -6,7 +6,7 @@
 collect, process, model, and visualize weather data to answer a real-world
 question:
 
-> 🗺️ *W_hen is the best time to visit a city based on weather conditions?*__
+> 🗺️ *When is the best time to visit a city based on weather conditions?*__
 
 The project is built using:
 
@@ -118,7 +118,7 @@ toetrandro-etl/
 ## 🚀 Getting Started
 
 1. Clone the repository\
-   `git clone https://github.com/yourusername/weather-data-pipeline.git`
+   `git clone https://github.com/Abega1642/toetrandro-etl.git`
 
 2. Install dependencies\
    `pip install -r requirements.txt`
