@@ -1,4 +1,4 @@
-# 🌤️ Toetrandro-etl -- Travel Recommendation Based on Climate
+# 🌤️ Toetrandro-etl Ø Travel Recommendation Based on Climate
 
 ## 🧭 Project Overview
 
@@ -46,11 +46,11 @@ The project is built using:
 ## ⚙️ Technical Stack
 
 | Layer         | Tools/Tech Used                   |
-| ------------- | --------------------------------- |
+| ------------- |-----------------------------------|
 | Automation    | Apache Airflow                    |
 | Data Handling | Python, Pandas                    |
 | Data Sources  | OpenWeather API, CSV/Kaggle       |
-| Visualization | Jupyter Notebooks, Dash/Streamlit |
+| Visualization | Jupyter Notebooks, Metabase       |
 | Orchestration | DAGs with task-based architecture |
 
 ---
@@ -133,7 +133,10 @@ toetrandro-etl/
    ```
 
 5. Launch Airflow\
-   `airflow api-server & airflow scheduler & airflow dag-processor`
+   
+   ```bash
+     airflow api-server & airflow scheduler & airflow dag-processor
+   ```
 
 ---
 
