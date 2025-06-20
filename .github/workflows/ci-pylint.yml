@@ -24,4 +24,4 @@ jobs:
 
       - name: Run pylint only for docstring messages (C0114, C0116)
         run: |
-          pylint beval --disable=all --enable=C0114,C0116
+          pylint ./ --disable=all --enable=C0114,C0116
