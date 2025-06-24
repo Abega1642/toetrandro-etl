@@ -24,8 +24,7 @@ class TestCityLocation(unittest.TestCase):
         city = City("Rome")
         city.set_coordinates(41.9028, 12.4964)
         self.assertEqual(
-            city.to_dict(),
-            {"name": "Rome", "lat": 41.9028, "lon": 12.4964}
+            city.to_dict(), {"name": "Rome", "lat": 41.9028, "lon": 12.4964}
         )
 
     def test_set_coordinates_overwrite(self):
@@ -37,10 +36,7 @@ class TestCityLocation(unittest.TestCase):
 
     def test_to_dict_with_missing_coordinates(self):
         city = City("Unknown")
-        self.assertEqual(
-            city.to_dict(),
-            {"name": "Unknown", "lat": None, "lon": None}
-        )
+        self.assertEqual(city.to_dict(), {"name": "Unknown", "lat": None, "lon": None})
 
     def test_coordinate_types(self):
         city = City("Buenos Aires")

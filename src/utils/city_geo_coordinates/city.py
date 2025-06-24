@@ -9,9 +9,4 @@ class City:
         self.longitude = lon
 
     def to_dict(self):
-        return {
-            "name": self.name,
-            "lat": self.latitude,
-            "lon": self.longitude
-        }
-
+        return {"name": self.name, "lat": self.latitude, "lon": self.longitude}

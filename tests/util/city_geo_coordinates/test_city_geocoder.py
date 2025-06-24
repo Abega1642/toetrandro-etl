@@ -1,9 +1,10 @@
 import unittest
 from unittest.mock import MagicMock
+
 from geopy.exc import GeocoderTimedOut
 
-from src.utils.city_geo_coordinates.city_geocoder import CityGeocoder
 from src.utils.city_geo_coordinates.city import City
+from src.utils.city_geo_coordinates.city_geocoder import CityGeocoder
 
 
 class TestCityGeocoder(unittest.TestCase):
@@ -30,8 +31,10 @@ class TestCityGeocoder(unittest.TestCase):
 
     def test_geocode_city_handles_timeout(self):
         city = City("Timeout City")
+
         def raise_timeout(*args, **kwargs):
             raise GeocoderTimedOut("Timeout")
+
         self.geocoder.geolocator.geocode = raise_timeout
         self.geocoder.geocode_city(city)
         self.assertIsNone(city.latitude)
@@ -58,6 +61,7 @@ class TestCityGeocoder(unittest.TestCase):
 
     def test_geocoder_instance_type(self):
         from geopy.geocoders import Nominatim
+
         self.assertIsInstance(self.geocoder.geolocator, Nominatim)
 
     def test_partial_results_allowed(self):

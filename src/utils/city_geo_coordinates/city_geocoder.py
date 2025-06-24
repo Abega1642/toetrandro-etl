@@ -1,5 +1,6 @@
-from geopy.geocoders import Nominatim
 from time import sleep
+
+from geopy.geocoders import Nominatim
 
 from src.utils.city_geo_coordinates.city import City
 
@@ -12,7 +13,9 @@ class CityGeocoder:
         try:
             location = self.geolocator.geocode(city.name)
             if location:
-                city.set_coordinates(round(location.latitude, 4), round(location.longitude, 4))
+                city.set_coordinates(
+                    round(location.latitude, 4), round(location.longitude, 4)
+                )
         except Exception as e:
             print(f"Error geocoding '{city.name}': {e}")
         finally:

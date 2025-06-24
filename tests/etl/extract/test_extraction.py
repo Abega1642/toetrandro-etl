@@ -1,9 +1,10 @@
 from datetime import datetime
+from unittest.mock import patch
 
 import pytest
-from unittest.mock import patch
-from src.etl.extraction import Extract
+
 from src.etl.base import ETLStep
+from src.etl.extraction import Extract
 
 DUMMY_WEATHER = {
     "daily": [
@@ -13,16 +14,15 @@ DUMMY_WEATHER = {
             "wind_speed": 3.2,
             "pop": 0.1,
             "humidity": 60,
-            "weather": [{"main": "Clouds", "description": "overcast clouds"}]
+            "weather": [{"main": "Clouds", "description": "overcast clouds"}],
         }
     ]
 }
 
-DUMMY_WEATHER_NO_DAILY = {
-    "current": {"temp": 25}
-}
+DUMMY_WEATHER_NO_DAILY = {"current": {"temp": 25}}
 
-cities_path = 'test_city.json'
+cities_path = "test_city.json"
+
 
 class TestExtract:
 
@@ -31,12 +31,11 @@ class TestExtract:
         assert isinstance(extractor, ETLStep)
         assert extractor.cities[0]["name"] == "Testville"
 
-
     @patch("src.etl.extraction.requests.Session.get")
     def test_fetch_weather_success(self, mock_get):
         mock_get.return_value.status_code = 200
         mock_get.return_value.json.return_value = DUMMY_WEATHER
-        extractor = Extract(cities_path='test_city.json')
+        extractor = Extract(cities_path="test_city.json")
         result = extractor.fetch_weather(12.34, 56.78)
         assert "daily" in result
         assert isinstance(result["daily"], list)
@@ -54,9 +53,8 @@ class TestExtract:
         extractor = Extract(cities_path=cities_path, output_dir=output_dir)
         extractor.save("Testville", DUMMY_WEATHER)
 
-        files = list((output_dir /datetime.now().strftime("%Y-%m-%d")).glob("*.csv"))
+        files = list((output_dir / datetime.now().strftime("%Y-%m-%d")).glob("*.csv"))
         assert files[0].name.startswith("Testville")
-
 
     def test_save_skips_invalid_json(self, tmp_path, caplog):
         output_dir = tmp_path / "raw"
