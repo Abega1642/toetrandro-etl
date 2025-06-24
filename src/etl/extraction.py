@@ -42,19 +42,44 @@ class Extract(ETLStep):
             logger.warning(f"No 'daily' data found for {city_name}. Skipping.")
             return
 
-        daily_data = data["daily"]
-        df = pd.json_normalize(daily_data)
-        df["city"] = city_name
-        df["timestamp_utc"] = datetime.now()
+        rows = []
+        for day in data["daily"]:
+            try:
+                row = {
+                    "city": city_name,
+                    "timestamp": datetime.fromtimestamp(day["dt"]),
+                    "sunrise": datetime.fromtimestamp(day["sunrise"]),
+                    "sunset": datetime.fromtimestamp(day["sunset"]),
+                    "temp_C": day["temp"]["day"],
+                    "temp_min_C": day["temp"]["min"],
+                    "temp_max_C": day["temp"]["max"],
+                    "feels_like_C": day["feels_like"]["day"],
+                    "pressure": day["pressure"],
+                    "humidity": day["humidity"],
+                    "wind_speed": day.get("wind_speed"),
+                    "wind_deg": day.get("wind_deg"),
+                    "wind_gust": day.get("wind_gust"),
+                    "cloudiness": day.get("clouds"),
+                    "precipitation_prob": day.get("pop", 0.0),
+                    "rain_1d": day.get("rain", 0.0),
+                    "weather_main": day["weather"][0]["main"] if day.get("weather") else None,
+                    "weather_description": day["weather"][0]["description"] if day.get("weather") else None,
+                    "summary": day.get("summary"),
+                    "extracted_at": datetime.now()
+                }
+                rows.append(row)
+            except (KeyError, IndexError, TypeError) as e:
+                logger.error(f"Error parsing daily data for {city_name}: {e}")
 
-        if df.empty:
-            logger.warning(f"DataFrame is empty for {city_name}. Skipping CSV save.")
+        if not rows:
+            logger.warning(f"No valid rows to save for {city_name}. Skipping CSV save.")
             return
 
-        date_str = datetime.now().strftime("%Y-%m-%d")
-        final_output_dire = f'{self.output_dir}/{date_str}'
+        df = pd.DataFrame(rows)
 
-        file_path = Path(final_output_dire)  / f"{city_name}.csv"
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        final_output_dir = Path(self.output_dir) / date_str
+        file_path = final_output_dir / f"{city_name}.csv"
         file_path.parent.mkdir(parents=True, exist_ok=True)
 
         try:
