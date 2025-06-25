@@ -3,17 +3,20 @@ from datetime import datetime
 from pathlib import Path
 import logging
 
+
 from src.etl.base import ETLStep
 
 logger = logging.getLogger(__name__)
+
+def get_now():
+    return datetime.now()
 
 class Transform(ETLStep):
     def __init__(self, input_dir='data/raw', output_dir='data/processed'):
         self.input_dir = input_dir
         self.output_dir = output_dir
 
-    @staticmethod
-    def __transform_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+    def transform_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
         logger.info("Starting transformation logic")
 
         df = df.dropna(subset=["temp_C", "rain_1d", "wind_speed", "humidity"])
@@ -44,7 +47,7 @@ class Transform(ETLStep):
 
     def apply(self):
         logger.info("Starting transformation step")
-        date_str = datetime.now().strftime("%Y-%m-%d")
+        date_str = get_now().strftime("%Y-%m-%d")
         input_path = Path(self.input_dir) / date_str
         output_path = Path(self.output_dir) / date_str
         output_path.mkdir(parents=True, exist_ok=True)
@@ -53,7 +56,7 @@ class Transform(ETLStep):
             try:
                 df = pd.read_csv(file)
                 logger.info(f"Transforming file: {file.name}")
-                df_clean = Transform.__transform_dataframe(df)
+                df_clean = Transform.transform_dataframe(self, df)
                 output_file = output_path / file.name
                 df_clean.to_csv(output_file, index=False)
                 logger.info(f"Saved transformed data → {output_file}")
