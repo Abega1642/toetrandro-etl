@@ -21,7 +21,13 @@ class Transform(ETLStep):
     def transform_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
         logger.info("Starting transformation logic")
 
-        df = df.dropna(subset=["temp_C", "rain_1d", "wind_speed", "humidity"])
+        df = df.dropna(
+            subset=[
+                col
+                for col in ["temp_C", "rain_1d", "wind_speed", "humidity"]
+                if col in df.columns
+            ]
+        )
 
         df["is_ideal_temp"] = df["temp_C"].between(22, 28)
         df["is_low_rain"] = df["rain_1d"] == 0

@@ -1,7 +1,9 @@
 import json
 import os
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
+from statistics import mean
 
 import pandas as pd
 import requests
@@ -15,7 +17,7 @@ load_dotenv()
 
 
 class Extract(ETLStep):
-    BASE_URL = "https://api.openweathermap.org/data/3.0/onecall"
+    BASE_URL = "https://api.openweathermap.org/data/2.5/forecast"
 
     def __init__(self, cities_path="config/cities.json", output_dir="data/raw"):
         self.api_key = os.getenv("OPENWEATHER_API_KEY")
@@ -27,77 +29,84 @@ class Extract(ETLStep):
 
         Path(self.output_dir).mkdir(parents=True, exist_ok=True)
 
-    def fetch_weather(self, lat, lon, exclude="minutely,hourly,alerts", units="metric"):
-        params = {
-            "lat": lat,
-            "lon": lon,
-            "appid": self.api_key,
-            "exclude": exclude,
-            "units": units,
-        }
+    def fetch_weather(self, lat, lon, units="metric"):
+        params = {"lat": lat, "lon": lon, "appid": self.api_key, "units": units}
         response = self.session.get(self.BASE_URL, params=params, timeout=10)
         response.raise_for_status()
         return response.json()
 
     def save(self, city_name: str, data: dict):
-        if "daily" not in data:
-            logger.warning(f"No 'daily' data found for {city_name}. Skipping.")
+        forecasts = data.get("list", [])
+        if not forecasts:
+            logger.warning(f"No forecast data for {city_name}. Skipping.")
             return
 
-        rows = []
-        for day in data["daily"]:
-            try:
-                row = {
-                    "city": city_name,
-                    "timestamp": datetime.fromtimestamp(day["dt"]),
-                    "sunrise": datetime.fromtimestamp(day["sunrise"]),
-                    "sunset": datetime.fromtimestamp(day["sunset"]),
-                    "temp_C": day["temp"]["day"],
-                    "temp_min_C": day["temp"]["min"],
-                    "temp_max_C": day["temp"]["max"],
-                    "feels_like_C": day["feels_like"]["day"],
-                    "pressure": day["pressure"],
-                    "humidity": day["humidity"],
-                    "wind_speed": day.get("wind_speed"),
-                    "wind_deg": day.get("wind_deg"),
-                    "wind_gust": day.get("wind_gust"),
-                    "cloudiness": day.get("clouds"),
-                    "precipitation_prob": day.get("pop", 0.0),
-                    "rain_1d": day.get("rain", 0.0),
-                    "weather_main": (
-                        day["weather"][0]["main"] if day.get("weather") else None
-                    ),
-                    "weather_description": (
-                        day["weather"][0]["description"] if day.get("weather") else None
-                    ),
-                    "summary": day.get("summary"),
-                    "extracted_at": datetime.now(),
-                }
-                rows.append(row)
-            except (KeyError, IndexError, TypeError) as e:
-                logger.error(f"Error parsing daily data for {city_name}: {e}")
+        today_str = datetime.now().strftime("%Y-%m-%d")
+        today_entries = [
+            f for f in forecasts if f.get("dt_txt", "").startswith(today_str)
+        ]
 
-        if not rows:
-            logger.warning(f"No valid rows to save for {city_name}. Skipping CSV save.")
+        if not today_entries:
+            logger.warning(f"No 3-hour forecasts for today for {city_name}. Skipping.")
             return
-
-        df = pd.DataFrame(rows)
-
-        date_str = datetime.now().strftime("%Y-%m-%d")
-        final_output_dir = Path(self.output_dir) / date_str
-        file_path = final_output_dir / f"{city_name}.csv"
-        file_path.parent.mkdir(parents=True, exist_ok=True)
 
         try:
-            df.to_csv(file_path, index=False)
-        except Exception as e:
-            logger.error(f"Failed to save CSV for {city_name}: {e}")
-            return
 
-        if file_path.exists() and file_path.stat().st_size > 0:
-            logger.info(f"Saved {len(df)} rows for {city_name} → {file_path}")
-        else:
-            logger.error(f"File was not written or is empty: {file_path}")
+            def safe_mean(values):
+                filtered = [v for v in values if v is not None]
+                return mean(filtered) if filtered else None
+
+            row = {
+                "city": city_name,
+                "timestamp": datetime.now(),
+                "sunrise": datetime.fromtimestamp(data["city"]["sunrise"]),
+                "sunset": datetime.fromtimestamp(data["city"]["sunset"]),
+                "temp_C": safe_mean([e["main"]["temp"] for e in today_entries]),
+                "temp_min_C": safe_mean([e["main"]["temp_min"] for e in today_entries]),
+                "temp_max_C": safe_mean([e["main"]["temp_max"] for e in today_entries]),
+                "feels_like_C": safe_mean(
+                    [e["main"]["feels_like"] for e in today_entries]
+                ),
+                "pressure": safe_mean([e["main"]["pressure"] for e in today_entries]),
+                "humidity": safe_mean([e["main"]["humidity"] for e in today_entries]),
+                "wind_speed": safe_mean([e["wind"]["speed"] for e in today_entries]),
+                "wind_deg": safe_mean([e["wind"]["deg"] for e in today_entries]),
+                "wind_gust": safe_mean([e["wind"].get("gust") for e in today_entries]),
+                "cloudiness": safe_mean([e["clouds"]["all"] for e in today_entries]),
+                "precipitation_prob": safe_mean(
+                    [e.get("pop", 0.0) for e in today_entries]
+                ),
+                "rain_1d": safe_mean(
+                    [
+                        e.get("rain", {}).get("3h", 0.0)
+                        for e in today_entries
+                        if "rain" in e
+                    ]
+                ),
+                "weather_main": Counter(
+                    [e["weather"][0]["main"] for e in today_entries if e.get("weather")]
+                ).most_common(1)[0][0],
+                "weather_description": Counter(
+                    [
+                        e["weather"][0]["description"]
+                        for e in today_entries
+                        if e.get("weather")
+                    ]
+                ).most_common(1)[0][0],
+                "summary": None,
+                "extracted_at": datetime.now(),
+            }
+
+            df = pd.DataFrame([row])
+            date_str = datetime.now().strftime("%Y-%m-%d")
+            final_output_dir = Path(self.output_dir) / date_str
+            file_path = final_output_dir / f"{city_name}.csv"
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+            df.to_csv(file_path, index=False)
+
+            logger.info(f"Saved aggregated forecast for {city_name} → {file_path}")
+        except Exception as e:
+            logger.error(f"Failed to build/save forecast row for {city_name}: {e}")
 
     def apply(self):
         logger.info("Starting extraction process...")
