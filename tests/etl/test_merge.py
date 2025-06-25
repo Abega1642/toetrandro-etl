@@ -1,6 +1,8 @@
 import pandas as pd
 import pytest
+
 from src.etl.merge import Merge
+
 
 class TestMerge:
 
@@ -11,17 +13,21 @@ class TestMerge:
         for day in ["2024-01-01", "2024-01-02"]:
             day_dir = base_dir / day
             day_dir.mkdir()
-            df = pd.DataFrame({
-                'city': ['Paris'],
-                'timestamp': [f"{day} 12:00:00"],
-                'temp_C': [25],
-                'humidity': [55]
-            })
+            df = pd.DataFrame(
+                {
+                    "city": ["Paris"],
+                    "timestamp": [f"{day} 12:00:00"],
+                    "temp_C": [25],
+                    "humidity": [55],
+                }
+            )
             df.to_csv(day_dir / "Paris.csv", index=False)
         return base_dir
 
     def test_merge_combines_all_city_files(self, create_processed_files, tmp_path):
-        merge = Merge(input_dir=create_processed_files, output_file=tmp_path / "merged.csv")
+        merge = Merge(
+            input_dir=create_processed_files, output_file=tmp_path / "merged.csv"
+        )
         merge.apply()
         assert (tmp_path / "merged.csv").exists()
 
@@ -41,15 +47,19 @@ class TestMerge:
         day = "2024-01-01"
         directory = tmp_path / "processed" / day
         directory.mkdir(parents=True, exist_ok=True)
-        df = pd.DataFrame({
-            'city': ['Paris', 'Paris'],
-            'timestamp': [f"{day} 12:00:00"] * 2,
-            'temp_C': [25, 25],
-            'humidity': [55, 55]
-        })
+        df = pd.DataFrame(
+            {
+                "city": ["Paris", "Paris"],
+                "timestamp": [f"{day} 12:00:00"] * 2,
+                "temp_C": [25, 25],
+                "humidity": [55, 55],
+            }
+        )
         df.to_csv(directory / "Paris.csv", index=False)
 
-        merge = Merge(input_dir=tmp_path / "processed", output_file=tmp_path / "merged.csv")
+        merge = Merge(
+            input_dir=tmp_path / "processed", output_file=tmp_path / "merged.csv"
+        )
         merge.apply()
 
         merged_df = pd.read_csv(tmp_path / "merged.csv")
@@ -64,17 +74,15 @@ class TestMerge:
     def test_merge_drop_invalid_rows(self, tmp_path):
         directory = tmp_path / "processed" / "2024-01-01"
         directory.mkdir(parents=True)
-        df = pd.DataFrame({
-            'city': ['Paris'],
-            'timestamp': [None],
-            'temp_C': [None],
-            'humidity': [55]
-        })
+        df = pd.DataFrame(
+            {"city": ["Paris"], "timestamp": [None], "temp_C": [None], "humidity": [55]}
+        )
         df.to_csv(directory / "Paris.csv", index=False)
 
-        merge = Merge(input_dir=tmp_path / "processed", output_file=tmp_path / "merged.csv")
+        merge = Merge(
+            input_dir=tmp_path / "processed", output_file=tmp_path / "merged.csv"
+        )
         merge.apply()
 
         # Since all rows are invalid, merged.csv should NOT exist
         assert not (tmp_path / "merged.csv").exists()
-

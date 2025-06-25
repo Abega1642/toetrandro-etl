@@ -1,5 +1,7 @@
-import pandas as pd
 from pathlib import Path
+
+import pandas as pd
+
 from src.etl.base import ETLStep
 from src.utils.logger import get_logger
 
@@ -7,7 +9,9 @@ logger = get_logger(__name__)
 
 
 class Merge(ETLStep):
-    def __init__(self, input_dir='data/processed', output_file='data/merged/all_weather_data.csv'):
+    def __init__(
+        self, input_dir="data/processed", output_file="data/merged/all_weather_data.csv"
+    ):
         self.input_dir = Path(input_dir)
         self.output_file = Path(output_file)
         self.output_file.parent.mkdir(parents=True, exist_ok=True)
@@ -31,16 +35,22 @@ class Merge(ETLStep):
             return
 
         merged_df = pd.concat(df_list, ignore_index=True)
-        logger.info(f"Merged {len(all_files)} files with total {len(merged_df)} rows before cleanup.")
+        logger.info(
+            f"Merged {len(all_files)} files with total {len(merged_df)} rows before cleanup."
+        )
 
-        merged_df.dropna(subset=['city', 'timestamp'], inplace=True)
-        logger.info(f"Dropped rows with missing city or timestamp. Remaining rows: {len(merged_df)}")
+        merged_df.dropna(subset=["city", "timestamp"], inplace=True)
+        logger.info(
+            f"Dropped rows with missing city or timestamp. Remaining rows: {len(merged_df)}"
+        )
 
         merged_df.drop_duplicates(inplace=True)
         logger.info(f"Dropped duplicate rows. Remaining rows: {len(merged_df)}")
 
         if merged_df.empty:
-            logger.warning("No valid rows to save after cleanup. Merged file will not be written.")
+            logger.warning(
+                "No valid rows to save after cleanup. Merged file will not be written."
+            )
             return
 
         try:
@@ -48,4 +58,3 @@ class Merge(ETLStep):
             logger.info(f"Successfully saved merged data → {self.output_file}")
         except Exception as e:
             logger.error(f"Failed to save merged data: {e}")
-

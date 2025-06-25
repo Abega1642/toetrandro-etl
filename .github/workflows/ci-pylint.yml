@@ -22,6 +22,6 @@ jobs:
       - name: Install pylint
         run: pip install pylint
 
-      - name: Run pylint only for docstring messages (C0114, C0116)
+      - name: Run pylint only for docstring messages (C0114, C0116, C0115)
         run: |
-          pylint ./ --disable=all --enable=C0114,C0116
+          pylint src --disable=all --enable=C0114,C0116,C0115

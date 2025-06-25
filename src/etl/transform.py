@@ -1,18 +1,20 @@
-import pandas as pd
+import logging
 from datetime import datetime
 from pathlib import Path
-import logging
 
+import pandas as pd
 
 from src.etl.base import ETLStep
 
 logger = logging.getLogger(__name__)
 
+
 def get_now():
     return datetime.now()
 
+
 class Transform(ETLStep):
-    def __init__(self, input_dir='data/raw', output_dir='data/processed'):
+    def __init__(self, input_dir="data/raw", output_dir="data/processed"):
         self.input_dir = input_dir
         self.output_dir = output_dir
 
@@ -27,15 +29,13 @@ class Transform(ETLStep):
         df["is_ideal_humidity"] = df["humidity"].between(30, 70)
 
         df["comfort_score"] = (
-            df["is_ideal_temp"].astype(int) * 0.4 +
-            df["is_low_rain"].astype(int) * 0.3 +
-            df["is_low_wind"].astype(int) * 0.2 +
-            df["is_ideal_humidity"].astype(int) * 0.1
+            df["is_ideal_temp"].astype(int) * 0.4
+            + df["is_low_rain"].astype(int) * 0.3
+            + df["is_low_wind"].astype(int) * 0.2
+            + df["is_ideal_humidity"].astype(int) * 0.1
         )
 
-        df["is_ideal_day"] = (
-            df["is_ideal_temp"] & df["is_low_rain"] & df["is_low_wind"]
-        )
+        df["is_ideal_day"] = df["is_ideal_temp"] & df["is_low_rain"] & df["is_low_wind"]
 
         df["timestamp"] = pd.to_datetime(df["timestamp"])
         df["month"] = df["timestamp"].dt.month_name()
