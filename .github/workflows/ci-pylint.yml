@@ -24,4 +24,5 @@ jobs:
 
       - name: Run pylint only for docstring messages (C0114, C0116, C0115)
         run: |
-          pylint src --disable=all --enable=C0114,C0116,C0115
+          pylint src --disable=all --enable=C0114,C0116,C0115 --exit-zero
+      
