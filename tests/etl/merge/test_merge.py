@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from src.etl.merge import Merge
+from src.core.merge import Merge
 
 
 class TestMerge:

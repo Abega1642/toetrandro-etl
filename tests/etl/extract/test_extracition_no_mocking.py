@@ -9,7 +9,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from requests import RequestException
 
-from src.etl.extraction import Extract
+from src.core.extraction import Extract
 
 load_dotenv()
 

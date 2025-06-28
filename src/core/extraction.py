@@ -9,7 +9,7 @@ import pandas as pd
 import requests
 from dotenv import load_dotenv
 
-from src.etl.base import ETLStep
+from src.core.base import ETLStep
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)

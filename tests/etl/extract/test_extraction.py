@@ -2,8 +2,8 @@ from unittest.mock import patch
 
 import pytest
 
-from src.etl.base import ETLStep
-from src.etl.extraction import Extract
+from src.core.base import ETLStep
+from src.core.extraction import Extract
 
 DUMMY_3H_FORECAST = {
     "list": [
@@ -41,7 +41,7 @@ class TestExtract:
         assert isinstance(extractor, ETLStep)
         assert extractor.cities[0]["name"] == "Testville"
 
-    @patch("src.etl.extraction.requests.Session.get")
+    @patch("src.core.extraction.requests.Session.get")
     def test_fetch_weather_success(self, mock_get):
         mock_get.return_value.status_code = 200
         mock_get.return_value.json.return_value = DUMMY_3H_FORECAST
@@ -50,7 +50,7 @@ class TestExtract:
         assert "list" in result
         assert isinstance(result["list"], list)
 
-    @patch("src.etl.extraction.requests.Session.get")
+    @patch("src.core.extraction.requests.Session.get")
     def test_fetch_weather_failure(self, mock_get):
         mock_get.side_effect = Exception("API error")
         extractor = Extract(cities_path=CITIES_PATH)
@@ -65,8 +65,8 @@ class TestExtract:
         assert "Skipping" in caplog.text
         assert len(list(output_dir.glob("*.csv"))) == 0
 
-    @patch("src.etl.extraction.Extract.fetch_weather", return_value=DUMMY_3H_FORECAST)
-    @patch("src.etl.extraction.Extract.save")
+    @patch("src.core.extraction.Extract.fetch_weather", return_value=DUMMY_3H_FORECAST)
+    @patch("src.core.extraction.Extract.save")
     def test_apply_full_pipeline(self, mock_save, mock_fetch):
         extractor = Extract(cities_path=CITIES_PATH)
         extractor.apply()

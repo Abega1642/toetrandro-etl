@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.etl.base import ETLStep
+from src.core.base import ETLStep
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)

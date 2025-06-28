@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pandas as pd
 import pytest
 
-from src.etl.transform import Transform
+from src.core.transform import Transform
 
 
 class TestTransform:
@@ -73,7 +73,7 @@ class TestTransform:
         assert result.iloc[0]["is_ideal_day"] == True
 
     def test_transform_apply_logs_and_saves(self, tmp_path):
-        with patch("src.etl.transform.get_now") as mock_get_now:
+        with patch("src.core.transform.get_now") as mock_get_now:
             mock_get_now.return_value = datetime(2024, 5, 1)
             date_str = "2024-05-01"
 

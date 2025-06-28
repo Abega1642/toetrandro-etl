@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.etl.transform import Transform
+from src.core.transform import Transform
 
 
 class TestTransformIntegration(unittest.TestCase):

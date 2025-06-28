@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.etl.base import ETLStep
+from src.core.base import ETLStep
 
 logger = logging.getLogger(__name__)
 

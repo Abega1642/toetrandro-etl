@@ -5,7 +5,7 @@ import pandas as pd
 from pathlib import Path
 
 
-from src.etl.merge import Merge
+from src.core.merge import Merge
 
 class TestMergeIntegration(unittest.TestCase):
     def setUp(self):
