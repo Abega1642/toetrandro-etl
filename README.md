@@ -1,4 +1,4 @@
-# 🌤️ Toetrandro-etl Ø Travel Recommendation Based on Climate
+# 🌤️ Toetrandro-etl -- Travel Recommendation Based on Climate
 
 ## 🧭 Project Overview
 
@@ -71,17 +71,18 @@ The project is built using:
 
 ```
 toetrandro-etl/
-├── airflow/
-│   ├── dags/                    # Airflow DAGs
-│   └── config/                  # Airflow variables, settings
+├── workflows/
+│   ├── dags/                   # Airflow DAGs
+│   ├── scripts/                # Airflow scripts                  
+│   └── config/                 # Airflow variables, settings
 ├── data/
-│   ├── raw/                     # Raw extracted data
-│   └── processed/               # Cleaned, transformed data
+│   ├── raw/                    # Raw extracted data
+│   └── processed/              # Cleaned, transformed data
 ├── notebooks/                  # Jupyter Notebooks for analysis & viz
 ├── src/
-│   ├── api/                     # OpenWeather API client
-│   ├── processing/             # Data transformation scripts
-│   └── utils/                  # Logging, helpers
+│   ├── api/                    # OpenWeather API client
+│   ├── core/                   # Data transformation scripts
+│   └── utils/                  # Logging
 ├── tests/                      # Unit tests
 ├── requirements.txt            # Dependencies
 └── README.md
