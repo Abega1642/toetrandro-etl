@@ -2,13 +2,13 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.core.base import ETLStep
+from src.core.base import Process
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
 
-class Merge(ETLStep):
+class Merge(Process):
     def __init__(
         self, input_dir="data/processed", output_file="data/merged/all_weather_data.csv"
     ):

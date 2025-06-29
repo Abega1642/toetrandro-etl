@@ -1,5 +1,4 @@
 import json
-import os
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
@@ -7,22 +6,27 @@ from statistics import mean
 
 import pandas as pd
 import requests
+from airflow.models import Variable
 from dotenv import load_dotenv
 
-from src.core.base import ETLStep
+from src.core.base import Process
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
 load_dotenv()
 
 
-class Extract(ETLStep):
+class Extract(Process):
     BASE_URL = "https://api.openweathermap.org/data/2.5/forecast"
 
-    def __init__(self, cities_path="config/cities.json", output_dir="data/raw"):
-        self.api_key = os.getenv("OPENWEATHER_API_KEY")
+    def __init__(self, cities_path=None, output_dir="data/raw"):
+        self.api_key = Variable.get("OPENWEATHER_API_KEY")
         self.output_dir = output_dir
         self.session = requests.Session()
+
+        if cities_path is None:
+            base_dir = Path(__file__).resolve().parents[2]
+            cities_path = base_dir / "config" / "cities.json"
 
         with open(cities_path, "r") as f:
             self.cities = json.load(f)
@@ -77,11 +81,7 @@ class Extract(ETLStep):
                     [e.get("pop", 0.0) for e in today_entries]
                 ),
                 "rain_1d": safe_mean(
-                    [
-                        e.get("rain", {}).get("3h", 0.0)
-                        for e in today_entries
-                        if "rain" in e
-                    ]
+                    [e.get("rain", {}).get("3h", 0.0) for e in today_entries]
                 ),
                 "weather_main": Counter(
                     [e["weather"][0]["main"] for e in today_entries if e.get("weather")]

@@ -1,35 +1,34 @@
-from airflow import DAG
-from airflow.operators.python import PythonOperator
-from datetime import datetime
-
-from airflow.scripts.extract_step import ExtractStep
-from airflow.scripts.merge_step import MergeStep
-from airflow.scripts.transform_step import TransformStep
-
-import sys
 import os
+import sys
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-src_path = os.path.join(project_root, "src")
 
-if src_path not in sys.path:
-    sys.path.insert(0, src_path)
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
 
+from datetime import datetime
+
+from airflow import DAG
+from airflow.providers.standard.operators.python import PythonOperator
+
+from workflows.scripts.extract_step import ExtractStep
+from workflows.scripts.merge_step import MergeStep
+from workflows.scripts.transform_step import TransformStep
 
 default_args = {
     "owner": "airflow",
     "depends_on_past": False,
-    "start_date": datetime(2025, 6, 28),
+    "start_date": datetime(2025, 6, 29),
     "retries": 1,
 }
 
 with DAG(
-    dag_id="toetrandro_etl_pipeline_oop",
+    dag_id="toetrandro_etl_pipeline",
     default_args=default_args,
-    schedule_interval="@daily",
+    schedule="@daily",
     catchup=False,
     max_active_runs=1,
-    tags=["weather", "ETL", "OOP"],
+    tags=["toetrandro", "etl"],
 ) as dag:
 
     def run_extract():
@@ -45,19 +44,16 @@ with DAG(
     extract_task = PythonOperator(
         task_id="extract_weather_data",
         python_callable=run_extract,
-        provide_context=True,
-    )
-
-    merge_task = PythonOperator(
-        task_id="merge_processed_files",
-        python_callable=run_merge,
-        provide_context=True,
     )
 
     transform_task = PythonOperator(
         task_id="transform_enriched_data",
         python_callable=run_transform,
-        provide_context=True,
     )
 
-    extract_task >> merge_task >> transform_task
+    merge_task = PythonOperator(
+        task_id="merge_processed_files",
+        python_callable=run_merge,
+    )
+
+    extract_task >> transform_task >> merge_task

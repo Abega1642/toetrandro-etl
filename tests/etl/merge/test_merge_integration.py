@@ -1,11 +1,12 @@
 import shutil
 import tempfile
 import unittest
-import pandas as pd
 from pathlib import Path
 
+import pandas as pd
 
 from src.core.merge import Merge
+
 
 class TestMergeIntegration(unittest.TestCase):
     def setUp(self):
@@ -121,6 +122,7 @@ class TestMergeIntegration(unittest.TestCase):
         )
         Merge(input_dir=self.processed_dir, output_file=output_path).apply()
         self.assertTrue(output_path.exists())
+
 
 if __name__ == "__main__":
     unittest.main()

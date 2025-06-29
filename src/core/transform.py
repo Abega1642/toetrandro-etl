@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.core.base import ETLStep
+from src.core.base import Process
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +13,7 @@ def get_now():
     return datetime.now()
 
 
-class Transform(ETLStep):
+class Transform(Process):
     def __init__(self, input_dir="data/raw", output_dir="data/processed"):
         self.input_dir = input_dir
         self.output_dir = output_dir

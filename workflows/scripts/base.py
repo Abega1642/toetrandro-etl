@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
 
-
-class Process(ABC):
-
+class ETLStep(ABC):
     @abstractmethod
-    def apply(self, *args, **kwargs):
+    def run(self):
         pass

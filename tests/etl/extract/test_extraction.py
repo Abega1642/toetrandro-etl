@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from src.core.base import ETLStep
+from src.core.base import Process
 from src.core.extraction import Extract
 
 DUMMY_3H_FORECAST = {
@@ -38,7 +38,7 @@ CITIES_PATH = "test_city.json"
 class TestExtract:
     def test_init_extract_class(self):
         extractor = Extract(cities_path=CITIES_PATH)
-        assert isinstance(extractor, ETLStep)
+        assert isinstance(extractor, Process)
         assert extractor.cities[0]["name"] == "Testville"
 
     @patch("src.core.extraction.requests.Session.get")
