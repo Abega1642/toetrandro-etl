@@ -1,2 +1,2 @@
 city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at
-Tokyo,2025-06-29 23:31:12.729769,2025-06-29 22:28:20,2025-06-30 13:01:03,26.35,26.35,26.44,26.35,1011,73,2.36,190,2.68,0,0,0.0,Clear,clear sky,,2025-06-29 23:31:12.730325
+Tokyo,2025-06-29 23:33:58.460211,2025-06-29 22:28:20,2025-06-30 13:01:03,25.45,25.45,26.44,26.06,1011,77,2.36,190,2.68,0,0,0.0,Clear,clear sky,,2025-06-29 23:33:58.460404
