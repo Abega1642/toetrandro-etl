@@ -13,5 +13,20 @@
     "name": "New York",
     "lat": 40.7128,
     "lon": -74.0060
+  },
+  {
+    "name": "Antananarivo",
+    "lat": -23.374342,
+    "lon": 43.771008
+  },
+  {
+    "name": "Toliara",
+    "lat": -15.711775,
+    "lon": 46.399624
+  },
+  {
+    "name": "Mahajanga",
+    "lat": -18.172232,
+    "lon": 49.385963
   }
 ]
