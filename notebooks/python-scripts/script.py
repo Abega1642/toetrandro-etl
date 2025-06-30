@@ -1,6 +1,6 @@
-import pandas as pd
 from datetime import datetime
 
+import pandas as pd
 
 locations = pd.read_csv("locations.csv")
 weather = pd.read_csv("../data/merge/all_weather_data.csv")
@@ -31,9 +31,9 @@ df["is_low_rain"] = df["rain_1d"] == 0
 df["is_low_wind"] = df["wind_speed"] < 5
 df["is_ideal_humidity"] = False
 df["comfort_score"] = (
-    df["is_ideal_temp"].astype(int) * 0.4 +
-    df["is_low_rain"].astype(int) * 0.3 +
-    df["is_low_wind"].astype(int) * 0.2
+    df["is_ideal_temp"].astype(int) * 0.4
+    + df["is_low_rain"].astype(int) * 0.3
+    + df["is_low_wind"].astype(int) * 0.2
 )
 df["is_ideal_day"] = df["is_ideal_temp"] & df["is_low_rain"] & df["is_low_wind"]
 df["month"] = df["timestamp"].dt.month_name()
@@ -43,11 +43,35 @@ df["summary"] = None
 
 
 final_cols = [
-    "city", "timestamp", "sunrise", "sunset", "temp_C", "temp_min_C", "temp_max_C",
-    "feels_like_C", "pressure", "humidity", "wind_speed", "wind_deg", "wind_gust",
-    "cloudiness", "precipitation_prob", "rain_1d", "weather_main", "weather_description",
-    "summary", "extracted_at", "is_ideal_temp", "is_low_rain", "is_low_wind",
-    "is_ideal_humidity", "comfort_score", "is_ideal_day", "month", "year", "day_of_week"
+    "city",
+    "timestamp",
+    "sunrise",
+    "sunset",
+    "temp_C",
+    "temp_min_C",
+    "temp_max_C",
+    "feels_like_C",
+    "pressure",
+    "humidity",
+    "wind_speed",
+    "wind_deg",
+    "wind_gust",
+    "cloudiness",
+    "precipitation_prob",
+    "rain_1d",
+    "weather_main",
+    "weather_description",
+    "summary",
+    "extracted_at",
+    "is_ideal_temp",
+    "is_low_rain",
+    "is_low_wind",
+    "is_ideal_humidity",
+    "comfort_score",
+    "is_ideal_day",
+    "month",
+    "year",
+    "day_of_week",
 ]
 
 df_final = df[final_cols]

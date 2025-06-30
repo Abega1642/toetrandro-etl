@@ -8,11 +8,13 @@ monthly_stats = (
     .agg(
         avg_comfort_score=("comfort_score", "mean"),
         ideal_day_pct=("is_ideal_day", "mean"),
-        total_days=("is_ideal_day", "count")
+        total_days=("is_ideal_day", "count"),
     )
     .reset_index()
 )
 
 # Rank the best travel month per city
-monthly_stats["score_rank"] = monthly_stats.groupby("city")["avg_comfort_score"].rank(ascending=False)
+monthly_stats["score_rank"] = monthly_stats.groupby("city")["avg_comfort_score"].rank(
+    ascending=False
+)
 best_months = monthly_stats[monthly_stats["score_rank"] == 1]
