@@ -19,13 +19,16 @@ load_dotenv()
 class Extract(Process):
     BASE_URL = "https://api.openweathermap.org/data/2.5/forecast"
 
-    def __init__(self, cities_path=None, output_dir="data/raw"):
+    def __init__(self, cities_path=None, output_dir=None):
         self.api_key = Variable.get("OPENWEATHER_API_KEY")
-        self.output_dir = output_dir
         self.session = requests.Session()
 
+        base_dir = Path(__file__).resolve().parents[2]
+        if output_dir is None:
+            self.output_dir = base_dir / "data" / "raw"
+
         if cities_path is None:
-            base_dir = Path(__file__).resolve().parents[2]
+
             cities_path = base_dir / "config" / "cities.json"
 
         with open(cities_path, "r") as f:
