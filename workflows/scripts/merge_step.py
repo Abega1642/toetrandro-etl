@@ -1,5 +1,5 @@
-from workflows.scripts.base import ETLStep
 from src.core.merge import Merge
+from workflows.scripts.base import ETLStep
 
 
 class MergeStep(ETLStep):
