@@ -1,0 +1,2 @@
+city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at
+Antananarivo,2025-07-01 20:30:09.925685,2025-07-01 06:47:07,2025-07-01 17:30:06,23.15,22.630000000000003,23.15,22.994999999999997,1022,56.5,8.385,82,15.17,0,0,0.0,Clear,clear sky,,2025-07-01 20:30:09.926108

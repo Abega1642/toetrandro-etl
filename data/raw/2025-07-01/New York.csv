@@ -1,0 +1,2 @@
+city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at
+New York,2025-07-01 20:30:09.597024,2025-07-01 12:28:35,2025-07-02 03:30:59,31.92,31.285,31.92,37.379999999999995,1009,61.5,5.51,239.5,8.295,78.5,0.185,0.16,Clouds,broken clouds,,2025-07-01 20:30:09.597460
