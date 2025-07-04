@@ -14,9 +14,10 @@ def get_now():
 
 
 class Transform(Process):
-    def __init__(self, input_dir="data/raw", output_dir="data/processed"):
-        self.input_dir = input_dir
-        self.output_dir = output_dir
+    def __init__(self):
+        base_dir = Path(__file__).resolve().parents[2]
+        self.output_dir = base_dir / "data" / "processed"
+        self.input_dir = base_dir / "data" / "raw"
 
     def transform_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
         logger.info("Starting transformation logic")

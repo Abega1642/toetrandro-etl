@@ -9,11 +9,10 @@ logger = get_logger(__name__)
 
 
 class Merge(Process):
-    def __init__(
-        self, input_dir="data/processed", output_file="data/merged/all_weather_data.csv"
-    ):
-        self.input_dir = Path(input_dir)
-        self.output_file = Path(output_file)
+    def __init__(self):
+        base_dir = Path(__file__).resolve().parents[2]
+        self.output_file = base_dir / "data" / "merged" / "all_weather_data.csv"
+        self.input_dir = base_dir / "data" / "processed"
         self.output_file.parent.mkdir(parents=True, exist_ok=True)
 
     def apply(self):
