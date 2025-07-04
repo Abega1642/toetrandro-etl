@@ -1,3 +1,4 @@
+from src.core.final_merge import FinalMerge
 from src.core.merge import Merge
 from workflows.scripts.base import ETLStep
 
@@ -8,4 +9,6 @@ class MergeStep(ETLStep):
 
     def run(self):
         merger = Merge()
+        final_merge = FinalMerge()
         merger.apply()
+        final_merge.apply()
