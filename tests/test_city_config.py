@@ -140,7 +140,7 @@ class TestCityConfigurer(unittest.TestCase):
         ]
 
         configurer = CityConfigurer(["Paris"])
-        with patch("builtins.open", mock_open()) as mocked_file:
+        with patch("builtins.open", mock_open()):
             try:
                 configurer.apply()
             except TypeError:

@@ -2,9 +2,9 @@ location_id,latitude,longitude,elevation,utc_offset_seconds,timezone,timezone_ab
 0,40.738136,-74.04254,51.0,-14400,America/New_York,GMT-4
 1,35.676624,139.69112,40.0,32400,Asia/Tokyo,GMT+9
 2,48.822495,2.2881355,43.0,7200,Europe/Paris,GMT+2
-3,-23.374342,43.771008,8.0,10800,Indian/Antananarivo,GMT+3
-4,-15.711775,46.399624,13.0,10800,Indian/Antananarivo,GMT+3
-5,-18.172232,49.385963,7.0,10800,Indian/Antananarivo,GMT+3
+3,-23.374342,43.771008,8.0,10800,Madagascar/Toliara,GMT+3
+4,-15.711775,46.399624,13.0,10800,Madagascar/Mahajanga,GMT+3
+5,-18.172232,49.385963,7.0,10800,Madagascar/Toamasina,GMT+3
 
 location_id,time,temperature_2m_mean (°C),temperature_2m_max (°C),temperature_2m_min (°C),apparent_temperature_mean (°C),apparent_temperature_min (°C),apparent_temperature_max (°C),wind_speed_10m_max (m/s),wind_gusts_10m_max (m/s),wind_direction_10m_dominant (°),shortwave_radiation_sum (MJ/m²),et0_fao_evapotranspiration (mm),sunrise (iso8601),sunset (iso8601),daylight_duration (s),sunshine_duration (s),precipitation_sum (mm),rain_sum (mm),snowfall_sum (cm),precipitation_hours (h),weather_code (wmo code)
 0,2020-01-01,2.1,4.2,-0.7,-3.4,-5.3,-0.4,7.84,13.80,271,5.90,1.42,2020-01-01T08:20,2020-01-01T17:38,33521.89,14262.91,0.00,0.00,0.00,0.0,3
