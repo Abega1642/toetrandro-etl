@@ -1,0 +1,2 @@
+city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at
+Tokyo,2025-07-04 10:41:53.507261,2025-07-03 22:30:06,2025-07-04 13:00:43,29.026,27.650000000000002,29.026,32.232,1005.8,67.4,4.196,212,5.082,86.4,0.18,0.09999999999999999,Clouds,overcast clouds,,2025-07-04 10:41:53.507738

@@ -1,0 +1,2 @@
+city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at,is_ideal_temp,is_low_rain,is_low_wind,is_ideal_humidity,comfort_score,is_ideal_day,month,year,day_of_week
+Paris,2025-07-04 10:41:53.209021,2025-07-04 06:53:07,2025-07-04 22:56:33,22.568,22.568,24.308,22.0,1025.2,36.8,2.534,219.8,3.54,23.6,0,0.0,Clear,clear sky,,2025-07-04 10:41:53.209479,True,True,True,True,0.9999999999999999,True,July,2025,Friday
