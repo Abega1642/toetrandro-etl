@@ -1,7 +1,7 @@
-import unittest
-from unittest.mock import patch, mock_open
-from pathlib import Path
 import json
+import unittest
+from pathlib import Path
+from unittest.mock import mock_open, patch
 
 from src.core.city_config import CityConfigurer
 
@@ -20,7 +20,9 @@ class TestCityConfigurer(unittest.TestCase):
             configurer.apply()
             mocked_file.assert_called_once()
             handle = mocked_file()
-            written_data = json.loads("".join(call.args[0] for call in handle.write.call_args_list))
+            written_data = json.loads(
+                "".join(call.args[0] for call in handle.write.call_args_list)
+            )
             self.assertEqual(written_data[0]["name"], "Paris")
 
     @patch("src.utils.city_geo_coordinates.city_geocoder.CityGeocoder")
@@ -32,39 +34,52 @@ class TestCityConfigurer(unittest.TestCase):
         with patch("builtins.open", mock_open()) as mocked_file:
             configurer.apply()
             handle = mocked_file()
-            written_data = json.loads("".join(call.args[0] for call in handle.write.call_args_list))
+            written_data = json.loads(
+                "".join(call.args[0] for call in handle.write.call_args_list)
+            )
             self.assertEqual(written_data, [])
 
     @patch("src.utils.city_geo_coordinates.city_geocoder.CityGeocoder")
     def test_invalid_city_name_is_handled_gracefully(self, mock_geocoder):
         mock_geocoder = mock_geocoder.return_value
-        mock_geocoder.geocode_cities.return_value = [{"name": "Xyzabc", "lat": None, "lon": None}]
+        mock_geocoder.geocode_cities.return_value = [
+            {"name": "Xyzabc", "lat": None, "lon": None}
+        ]
 
         configurer = CityConfigurer(["Xyzabc"])
         with patch("builtins.open", mock_open()) as mocked_file:
             configurer.apply()
             handle = mocked_file()
-            written_data = json.loads("".join(call.args[0] for call in handle.write.call_args_list))
+            written_data = json.loads(
+                "".join(call.args[0] for call in handle.write.call_args_list)
+            )
             self.assertIsNone(written_data[0]["lat"])
 
     @patch("src.utils.city_geo_coordinates.city_geocoder.CityGeocoder")
     def test_output_path_override(self, mock_geocoder):
         mock_geocoder = mock_geocoder.return_value
-        mock_geocoder.geocode_cities.return_value = [{"name": "Tokyo", "lat": 35.6895, "lon": 139.6917}]
+        mock_geocoder.geocode_cities.return_value = [
+            {"name": "Tokyo", "lat": 35.6895, "lon": 139.6917}
+        ]
 
         configurer = CityConfigurer(["Tokyo"])
         with patch("builtins.open", mock_open()) as mocked_file:
-            configurer.establish_cities_config(["Tokyo"], output_path=Path("/tmp/test_cities.json"))
+            configurer.establish_cities_config(
+                ["Tokyo"], output_path=Path("/tmp/test_cities.json")
+            )
             mocked_file.assert_called_with(Path("/tmp/test_cities.json"), "w")
 
     @patch("src.utils.city_geo_coordinates.city_geocoder.CityGeocoder")
     def test_directory_creation_if_missing(self, mock_geocoder):
         mock_geocoder = mock_geocoder.return_value
-        mock_geocoder.geocode_cities.return_value = [{"name": "Paris", "lat": 48.8566, "lon": 2.3522}]
+        mock_geocoder.geocode_cities.return_value = [
+            {"name": "Paris", "lat": 48.8566, "lon": 2.3522}
+        ]
 
         configurer = CityConfigurer(["Paris"])
-        with patch("builtins.open", mock_open()), \
-             patch("pathlib.Path.mkdir") as mock_mkdir:
+        with patch("builtins.open", mock_open()), patch(
+            "pathlib.Path.mkdir"
+        ) as mock_mkdir:
             configurer.apply()
             mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
 
@@ -73,14 +88,16 @@ class TestCityConfigurer(unittest.TestCase):
         mock_geocoder = mock_geocoder.return_value
         mock_geocoder.geocode_cities.return_value = [
             {"name": "Paris", "lat": 48.8566, "lon": 2.3522},
-            {"name": "Tokyo", "lat": 35.6895, "lon": 139.6917}
+            {"name": "Tokyo", "lat": 35.6895, "lon": 139.6917},
         ]
 
         configurer = CityConfigurer(["Paris", "Tokyo"])
         with patch("builtins.open", mock_open()) as mocked_file:
             configurer.apply()
             handle = mocked_file()
-            written_data = json.loads("".join(call.args[0] for call in handle.write.call_args_list))
+            written_data = json.loads(
+                "".join(call.args[0] for call in handle.write.call_args_list)
+            )
             self.assertEqual(len(written_data), 2)
 
     @patch("src.utils.city_geo_coordinates.city_geocoder.CityGeocoder")
@@ -94,7 +111,9 @@ class TestCityConfigurer(unittest.TestCase):
         with patch("builtins.open", mock_open()) as mocked_file:
             configurer.apply()
             handle = mocked_file()
-            written_data = json.loads("".join(call.args[0] for call in handle.write.call_args_list))
+            written_data = json.loads(
+                "".join(call.args[0] for call in handle.write.call_args_list)
+            )
             self.assertEqual(written_data[0]["name"], "São Paulo")
 
     @patch("src.utils.city_geo_coordinates.city_geocoder.CityGeocoder")
@@ -108,7 +127,9 @@ class TestCityConfigurer(unittest.TestCase):
         with patch("builtins.open", mock_open()) as mocked_file:
             configurer.apply()
             handle = mocked_file()
-            written_data = json.loads("".join(call.args[0] for call in handle.write.call_args_list))
+            written_data = json.loads(
+                "".join(call.args[0] for call in handle.write.call_args_list)
+            )
             self.assertEqual(len(written_data), 50)
 
     @patch("src.utils.city_geo_coordinates.city_geocoder.CityGeocoder")
@@ -136,4 +157,3 @@ class TestCityConfigurer(unittest.TestCase):
                 configurer.apply()
             except Exception:
                 self.fail("Exception was not handled gracefully")
-

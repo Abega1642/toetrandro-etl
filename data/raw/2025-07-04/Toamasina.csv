@@ -1,2 +1,2 @@
 city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at
-Mahajanga,2025-07-04 11:41:44.135105,2025-07-04 06:22:28,2025-07-04 17:35:27,26.240000000000002,25.89,26.318,25.526,1019,39.4,6.248,118.8,9.94,33.4,0,0.0,Clouds,few clouds,,2025-07-04 11:41:44.135624
+Toamasina,2025-07-04 11:41:44.439552,2025-07-04 06:14:34,2025-07-04 17:18:36,22.178,21.656,22.178,22.338,1023.8,72.2,5.048,163.8,6.236,48.4,0.484,0.502,Rain,light rain,,2025-07-04 11:41:44.440227

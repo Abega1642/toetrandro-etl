@@ -7,6 +7,7 @@ from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
+
 class CityConfigurer(Process):
     def __init__(self, cities_name):
         self.city_names = cities_name

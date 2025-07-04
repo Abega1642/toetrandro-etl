@@ -1,8 +1,6 @@
 import os
 import sys
 
-from workflows.scripts.cities_config_step import CityConfigStep
-
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 if project_root not in sys.path:
@@ -13,6 +11,7 @@ from datetime import datetime
 from airflow import DAG
 from airflow.providers.standard.operators.python import PythonOperator
 
+from workflows.scripts.cities_config_step import CityConfigStep
 from workflows.scripts.extract_step import ExtractStep
 from workflows.scripts.merge_step import MergeStep
 from workflows.scripts.transform_step import TransformStep
