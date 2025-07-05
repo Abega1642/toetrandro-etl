@@ -78,7 +78,6 @@ toetrandro-etl/
 └── README.md
 ```
 
----
 
 ## 🔁 Pipeline Logic (Airflow DAG)
 
@@ -90,10 +89,15 @@ toetrandro-etl/
 
 ---
 
-## 🗒️ Need more details about the pipline ? 
+## 🗒️ Need more details about the pipline process ? 
 
-For more detail about those process, please read this documentation : [process_doc.md](doc/process/process_doc.md)
+#### 🧱 About the pipline
 
+For more details about the pipline process, please read this documentation : [process_doc.md](doc/process/process_doc.md)
+
+#### 🌬️ About the airflow config 
+
+For more details about the airflow variables, please read this documentation : [airflow_env.md](doc/process/airflow_env.md)
 
 ---
 
