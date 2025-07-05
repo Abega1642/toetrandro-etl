@@ -1,8 +1,9 @@
-import unittest
-import tempfile
 import shutil
-import pandas as pd
+import tempfile
+import unittest
 from pathlib import Path
+
+import pandas as pd
 
 from src.core.merge import Merge
 
@@ -26,12 +27,14 @@ class TestMerge(unittest.TestCase):
         for day in ["2024-01-01", "2024-01-02"]:
             day_dir = self.input_dir / day
             day_dir.mkdir()
-            df = pd.DataFrame({
-                "city": ["Paris"],
-                "timestamp": [f"{day} 12:00:00"],
-                "temp_C": [25],
-                "humidity": [55],
-            })
+            df = pd.DataFrame(
+                {
+                    "city": ["Paris"],
+                    "timestamp": [f"{day} 12:00:00"],
+                    "temp_C": [25],
+                    "humidity": [55],
+                }
+            )
             df.to_csv(day_dir / "Paris.csv", index=False)
 
         self.merge.apply()
@@ -50,12 +53,14 @@ class TestMerge(unittest.TestCase):
     def test_merge_deduplicates_by_city_and_timestamp(self):
         day_dir = self.input_dir / "2024-01-01"
         day_dir.mkdir()
-        df = pd.DataFrame({
-            "city": ["Paris", "Paris"],
-            "timestamp": ["2024-01-01 12:00:00"] * 2,
-            "temp_C": [25, 25],
-            "humidity": [55, 55],
-        })
+        df = pd.DataFrame(
+            {
+                "city": ["Paris", "Paris"],
+                "timestamp": ["2024-01-01 12:00:00"] * 2,
+                "temp_C": [25, 25],
+                "humidity": [55, 55],
+            }
+        )
         df.to_csv(day_dir / "Paris.csv", index=False)
 
         self.merge.apply()
@@ -65,12 +70,14 @@ class TestMerge(unittest.TestCase):
     def test_merge_drops_rows_with_missing_city_or_timestamp(self):
         day_dir = self.input_dir / "2024-01-01"
         day_dir.mkdir()
-        df = pd.DataFrame({
-            "city": ["Paris"],
-            "timestamp": [None],
-            "temp_C": [25],
-            "humidity": [55],
-        })
+        df = pd.DataFrame(
+            {
+                "city": ["Paris"],
+                "timestamp": [None],
+                "temp_C": [25],
+                "humidity": [55],
+            }
+        )
         df.to_csv(day_dir / "Paris.csv", index=False)
 
         self.merge.apply()

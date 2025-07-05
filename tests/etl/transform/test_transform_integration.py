@@ -11,11 +11,16 @@ from src.core.transform import Transform
 
 class TestTransformIntegration(unittest.TestCase):
     def setUp(self):
-        self.temp_dir = tempfile.mkdtemp()
-        self.raw_dir = Path(self.temp_dir, "data", "raw")
-        self.processed_dir = Path(self.temp_dir, "data", "processed")
+        self.temp_dir = Path(tempfile.mkdtemp())
+        self.raw_dir = self.temp_dir / "data" / "raw"
+        self.processed_dir = self.temp_dir / "data" / "processed"
         self.today = datetime.now().strftime("%Y-%m-%d")
         (self.raw_dir / self.today).mkdir(parents=True, exist_ok=True)
+        (self.processed_dir / self.today).mkdir(parents=True, exist_ok=True)
+
+        self.transform = Transform()
+        self.transform.input_dir = self.raw_dir
+        self.transform.output_dir = self.processed_dir
 
     def tearDown(self):
         shutil.rmtree(self.temp_dir)
@@ -34,9 +39,7 @@ class TestTransformIntegration(unittest.TestCase):
             "city,timestamp,temp_C,rain_1d,wind_speed,humidity\n"
             "Tokyo,2025-06-28,25.0,0.0,3.5,60\n",
         )
-        transform = Transform(self.raw_dir, self.processed_dir)
-        transform.apply()
-
+        self.transform.apply()
         df = self.read_output_df("weather.csv")
         self.assertIn("comfort_score", df.columns)
         self.assertEqual(df["comfort_score"].iloc[0], 1.0)
@@ -47,9 +50,7 @@ class TestTransformIntegration(unittest.TestCase):
             "city,timestamp,temp_C,rain_1d,wind_speed,humidity\n"
             "Paris,2025-06-28,26.0,0.0,2.0,50\n",
         )
-        transform = Transform(self.raw_dir, self.processed_dir)
-        transform.apply()
-
+        self.transform.apply()
         df = self.read_output_df("perfect_day.csv")
         self.assertTrue(df["is_ideal_day"].iloc[0])
 
@@ -59,9 +60,7 @@ class TestTransformIntegration(unittest.TestCase):
             "city,timestamp,temp_C,rain_1d,wind_speed,humidity\n"
             "London,2025-06-28,10.0,5.0,12.0,90\n",
         )
-        transform = Transform(self.raw_dir, self.processed_dir)
-        transform.apply()
-
+        self.transform.apply()
         df = self.read_output_df("stormy.csv")
         self.assertFalse(df["is_ideal_day"].iloc[0])
 
@@ -71,9 +70,7 @@ class TestTransformIntegration(unittest.TestCase):
             "city,timestamp,temp_C,rain_1d,wind_speed,humidity\n"
             "Madrid,2025-12-21,23.0,0.0,1.0,45\n",
         )
-        transform = Transform(self.raw_dir, self.processed_dir)
-        transform.apply()
-
+        self.transform.apply()
         df = self.read_output_df("time.csv")
         self.assertIn("month", df.columns)
         self.assertEqual(df["month"].iloc[0], "December")
@@ -85,9 +82,7 @@ class TestTransformIntegration(unittest.TestCase):
                 "city,timestamp,temp_C,rain_1d,wind_speed,humidity\n"
                 f"City{i},2025-06-28,24.0,0.0,3.0,55\n",
             )
-        transform = Transform(self.raw_dir, self.processed_dir)
-        transform.apply()
-
+        self.transform.apply()
         output_files = list((self.processed_dir / self.today).glob("*.csv"))
         self.assertEqual(len(output_files), 3)
 
@@ -97,9 +92,7 @@ class TestTransformIntegration(unittest.TestCase):
             "city,timestamp,temp_C,rain_1d,wind_speed,humidity\n"
             "Tokyo,2025-06-28,,0.0,3.0,50\n",
         )
-        transform = Transform(self.raw_dir, self.processed_dir)
-        transform.apply()
-
+        self.transform.apply()
         df = self.read_output_df("nulls.csv")
         self.assertEqual(len(df), 0)
 
@@ -109,9 +102,7 @@ class TestTransformIntegration(unittest.TestCase):
             "city,timestamp,temp_C,rain_1d,wind_speed,humidity\n"
             "Tokyo,2025-06-28,24.0,0.0,2.0,55\n",
         )
-        transform = Transform(self.raw_dir, self.processed_dir)
-        transform.apply()
-
+        self.transform.apply()
         df = self.read_output_df("check_cols.csv")
         expected = {
             "city",
