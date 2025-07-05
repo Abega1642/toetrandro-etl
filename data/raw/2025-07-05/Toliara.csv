@@ -1,0 +1,2 @@
+city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at
+Toliara,2025-07-05 20:15:53.713874,2025-07-05 06:47:31,2025-07-05 17:31:54,19.795,19.28,19.795,19.67,1022,70.5,3.175,133.5,4.33,0,0,0.0,Clear,clear sky,,2025-07-05 20:15:53.714164

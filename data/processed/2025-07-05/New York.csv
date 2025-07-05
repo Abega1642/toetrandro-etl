@@ -1,0 +1,2 @@
+city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at,is_ideal_temp,is_low_rain,is_low_wind,is_ideal_humidity,comfort_score,is_ideal_day,month,year,day_of_week
+New York,2025-07-05 20:15:51.547454,2025-07-05 12:30:45,2025-07-06 03:30:12,28.965,28.7,28.965,28.665,1020,41,5.335,167.5,5.58,5.5,0,0.0,Clear,clear sky,,2025-07-05 20:15:51.552230,False,True,False,True,0.4,False,July,2025,Saturday
