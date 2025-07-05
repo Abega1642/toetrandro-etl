@@ -1,15 +1,13 @@
 import json
 import os
 import sys
-
-from workflows.scripts.migration_step import MigrationStep
+from datetime import datetime
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-from datetime import datetime
 
 from airflow import DAG
 from airflow.models import Variable
@@ -18,6 +16,7 @@ from airflow.providers.standard.operators.python import PythonOperator
 from workflows.scripts.cities_config_step import CityConfigStep
 from workflows.scripts.extract_step import ExtractStep
 from workflows.scripts.merge_step import MergeStep
+from workflows.scripts.migration_step import MigrationStep
 from workflows.scripts.transform_step import TransformStep
 
 default_args = {
@@ -47,9 +46,9 @@ with DAG(
     def run_extract():
         ExtractStep().run()
 
-    def run_merge(**kwargs):
+    def run_merge_step(step_class, **kwargs):
         execution_date = kwargs["ds"]
-        MergeStep(execution_date).run()
+        step_class(execution_date).run()
 
     def run_transform():
         TransformStep().run()
@@ -75,7 +74,7 @@ with DAG(
 
     merge_task = PythonOperator(
         task_id="merge_processed_files",
-        python_callable=run_merge,
+        python_callable=lambda **kwargs: run_merge_step(MergeStep, **kwargs),
     )
 
     migration_task = PythonOperator(
