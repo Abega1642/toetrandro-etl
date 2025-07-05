@@ -90,6 +90,13 @@ toetrandro-etl/
 
 ---
 
+## 🗒️ Need more details about the pipline ? 
+
+For more detail about those process, please read this documentation : [process_doc.md](doc/process/process_doc.md)
+
+
+---
+
 ## 📊 Dashboard Overview
 
 The Toetrandro dashboard is designed to answer two complementary questions:

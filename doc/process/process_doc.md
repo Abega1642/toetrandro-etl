@@ -10,7 +10,7 @@ The pipeline is orchestrated using Apache Airflow and is composed of five modula
 The pipeline is composed of the following sequential tasks:
 
 ```
-    city_config_task >> extract_task >> transform_task >> merge_task >> migration_task
+city_config_task >> extract_task >> transform_task >> merge_task >> migration_task
 ```
 
 Each task is responsible for a distinct phase in the ETL process.
