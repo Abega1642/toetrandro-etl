@@ -1,5 +1,3 @@
-DROP TABLE IF EXISTS staging_ready_data;
-
 CREATE TABLE staging_ready_data (
     city TEXT,
     timestamp TIMESTAMP,
