@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import psycopg2
 
 from src.core.base import Process
@@ -7,13 +9,17 @@ logger = get_logger(__name__)
 
 
 class Migration(Process):
-    def __init__(self, db_config):
+    def __init__(self, db_config, csv_path=None):
         self.db_config = db_config
+
+        base_dir = Path(__file__).resolve().parents[2]
+        self.csv_path = base_dir / "data" / "merged" / "ready_data.csv"
         self.conn = None
 
     def apply(self):
         try:
             self._connect()
+            self._load_staging_data()
             self._insert_dim_city()
             self._insert_dim_date()
             self._insert_dim_weather()
@@ -32,6 +38,19 @@ class Migration(Process):
         self.conn = psycopg2.connect(**self.db_config)
         logger.info("Connected to the database.")
 
+    def _load_staging_data(self):
+        with self.conn.cursor() as cur:
+            logger.info("Loading data into staging_ready_data from CSV...")
+            cur.execute("TRUNCATE TABLE staging_ready_data;")
+            with open(self.csv_path, "r", encoding="utf-8") as f:
+                cur.copy_expert(
+                    """
+                    COPY staging_ready_data FROM STDIN WITH CSV HEADER DELIMITER ',';
+                    """,
+                    f,
+                )
+            logger.info("staging_ready_data loaded successfully.")
+
     def _insert_dim_city(self):
         with self.conn.cursor() as cur:
             cur.execute(
@@ -39,7 +58,7 @@ class Migration(Process):
                 INSERT INTO dim_city (city_name)
                 SELECT DISTINCT city FROM staging_ready_data
                 ON CONFLICT (city_name) DO NOTHING;
-            """
+                """
             )
             logger.info("dim_city updated.")
 
@@ -51,7 +70,7 @@ class Migration(Process):
                 SELECT DISTINCT DATE(timestamp), year, month, day_of_week
                 FROM staging_ready_data
                 ON CONFLICT (date_value) DO NOTHING;
-            """
+                """
             )
             logger.info("dim_date updated.")
 
@@ -63,7 +82,7 @@ class Migration(Process):
                 SELECT DISTINCT weather_main, weather_description
                 FROM staging_ready_data
                 ON CONFLICT (weather_main, weather_description) DO NOTHING;
-            """
+                """
             )
             logger.info("dim_weather updated.")
 
@@ -97,6 +116,6 @@ class Migration(Process):
                     f.city_id = c.city_id AND
                     f.date_id = d.date_id
                 WHERE f.fact_id IS NULL;
-            """
+                """
             )
             logger.info("weather_facts updated.")
