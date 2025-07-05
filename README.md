@@ -96,6 +96,7 @@ Detailed documentation is available in the [`doc`](doc) folder:
 
 - 🧱 [Pipeline Process](doc/process/process_doc.md) — Detailed breakdown of each ETL step  
 - 🌬️ [Airflow Configuration](doc/process/airflow_env.md) — Airflow variables and environment setup  
+- 📊 [Model Documentation](doc/data/model_doc.md) — About how the model is design (**Star schema model**)
 
 ---
 
