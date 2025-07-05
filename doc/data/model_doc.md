@@ -115,4 +115,3 @@ During the `migrate_data_to_postgres` task:
 2. Dimension tables are populated using `SELECT DISTINCT` from the staging table
 3. The fact table is populated by joining the staging data with dimension keys
 4. Duplicate entries are avoided using `ON CONFLICT DO NOTHING`
-5. 
