@@ -223,3 +223,7 @@ class TestFinalMerge(unittest.TestCase):
         )
         merged_df = merger.apply()
         self.assertEqual(len(merged_df), 1)
+
+
+if __name__ == "__main__":
+    unittest.main()
