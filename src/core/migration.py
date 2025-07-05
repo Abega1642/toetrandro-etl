@@ -1,4 +1,5 @@
 import psycopg2
+
 from src.core.base import Process
 from src.utils.logger import get_logger
 
@@ -33,36 +34,43 @@ class Migration(Process):
 
     def _insert_dim_city(self):
         with self.conn.cursor() as cur:
-            cur.execute("""
+            cur.execute(
+                """
                 INSERT INTO dim_city (city_name)
                 SELECT DISTINCT city FROM staging_ready_data
                 ON CONFLICT (city_name) DO NOTHING;
-            """)
+            """
+            )
             logger.info("dim_city updated.")
 
     def _insert_dim_date(self):
         with self.conn.cursor() as cur:
-            cur.execute("""
+            cur.execute(
+                """
                 INSERT INTO dim_date (date_value, year, month, day_of_week)
                 SELECT DISTINCT DATE(timestamp), year, month, day_of_week
                 FROM staging_ready_data
                 ON CONFLICT (date_value) DO NOTHING;
-            """)
+            """
+            )
             logger.info("dim_date updated.")
 
     def _insert_dim_weather(self):
         with self.conn.cursor() as cur:
-            cur.execute("""
+            cur.execute(
+                """
                 INSERT INTO dim_weather (weather_main, weather_description)
                 SELECT DISTINCT weather_main, weather_description
                 FROM staging_ready_data
                 ON CONFLICT (weather_main, weather_description) DO NOTHING;
-            """)
+            """
+            )
             logger.info("dim_weather updated.")
 
     def _insert_weather_facts(self):
         with self.conn.cursor() as cur:
-            cur.execute("""
+            cur.execute(
+                """
                 INSERT INTO weather_facts (
                     city_id, date_id, weather_id,
                     sunrise, sunset, temp_C, temp_min_C, temp_max_C, feels_like_C,
@@ -83,10 +91,12 @@ class Migration(Process):
                 FROM staging_ready_data s
                 JOIN dim_city c ON s.city = c.city_name
                 JOIN dim_date d ON DATE(s.timestamp) = d.date_value
-                LEFT JOIN dim_weather w ON s.weather_main = w.weather_main AND s.weather_description = w.weather_description
+                LEFT JOIN dim_weather w ON s.weather_main = w.weather_main 
+                    AND s.weather_description = w.weather_description
                 LEFT JOIN weather_facts f ON
                     f.city_id = c.city_id AND
                     f.date_id = d.date_id
                 WHERE f.fact_id IS NULL;
-            """)
+            """
+            )
             logger.info("weather_facts updated.")

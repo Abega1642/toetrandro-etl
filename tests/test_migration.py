@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 from src.core.migration import Migration
 
@@ -12,7 +12,7 @@ class TestMigration(unittest.TestCase):
             "user": "test_user",
             "password": "test_pass",
             "host": "localhost",
-            "port": 5432
+            "port": 5432,
         }
         self.migration = Migration(self.db_config)
 
