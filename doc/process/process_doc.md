@@ -5,11 +5,22 @@ The pipeline is orchestrated using Apache Airflow and is composed of five modula
 
 ---
 
+> ⚠️ **Important Note:** Before running the DAG, ensure that your PostgreSQL database is properly configured:
+>
+> - ✅ The database must be created and accessible with the correct credentials.
+> - 🧱 All required tables must be initialized using the SQL script provided below.
+> - 🔐 The database user must have sufficient privileges (e.g., `CREATE`, `INSERT`, `SELECT`, `REFERENCES`) to execute all operations.
+>
+> 📄 Initialization script: [toetrandro_db_script.sql](../../migration/toetrandro_db_script.sql)
+> 
+
+---
+
 ## 🧱 DAG Structure Overview
 
 The pipeline is composed of the following sequential tasks:
 
-```
+```python
 city_config_task >> extract_task >> transform_task >> merge_task >> migration_task
 ```
 
