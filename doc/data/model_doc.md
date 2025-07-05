@@ -4,10 +4,14 @@ The final stage of the ETL pipeline loads the merged dataset into a PostgreSQL d
 
 ---
 
-> ‼️ IMPORTANT NOTE : before you run the DAG, make sure you have the PostgreSQL database set up, with correct credentials, database and table. Details on the tables can be found in the file indicated below.
-> Make sure to have the database correctly set-up !
-
-Script name: [toetrandro_db_scipt.sql](../../migration/toetrandro_db_script.sql)
+> ⚠️ **Important Note:** Before running the DAG, ensure that your PostgreSQL database is properly configured:
+>
+> - ✅ The database must be created and accessible with the correct credentials.
+> - 🧱 All required tables must be initialized using the SQL script provided below.
+> - 🔐 The database user must have sufficient privileges (e.g., `CREATE`, `INSERT`, `SELECT`, `REFERENCES`) to execute all operations.
+>
+> 📄 Initialization script: [toetrandro_db_script.sql](../../migration/toetrandro_db_script.sql)
+> 
 
 ---
 
