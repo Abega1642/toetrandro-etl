@@ -1,9 +1,9 @@
 from src.core.migration import Migration
+from src.utils.logger import get_logger
 from workflows.scripts.base import ETLStep
 
-from src.utils.logger import get_logger
-
 logger = get_logger(__name__)
+
 
 class MigrationStep(ETLStep):
     def __init__(self, db_config):
