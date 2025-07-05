@@ -6,7 +6,7 @@
 
 > 🗺️ *When is the best time to visit a city based on weather conditions?*
 
-This project combines automation, data modeling, and interactive dashboards to deliver actionable travel recommendations.
+This project combines automation, data modeling, and interactive dashboards to deliver actionable travel recommendations based on real-time and historical climate data.
 
 ---
 
@@ -92,27 +92,47 @@ toetrandro-etl/
 
 ## 📊 Dashboard Overview
 
-The dashboard provides a rich, visual summary of climate comfort across cities and seasons.
+The Toetrandro dashboard is designed to answer two complementary questions:
 
-Navigate through the global insights :
+---
+
+### 🌍 Global View: *Where and when is the best place to travel?*
 
 ![Global_Toetrandro Dashboard](doc/dashboard/global.png)
 
+This view provides a high-level comparison across all cities and time periods. It answers:
 
-Or navigate through the city that interests you :
+- 🏆 **Which city has the highest annual comfort score?**
+- 📅 **How many ideal days were recorded across all cities?**
+- 🌟 **Which cities are best to visit overall?**
+- 📆 **Which months are most comfortable for travel?**
+- ❄️ **How does seasonal comfort vary by city?**
+
+> This global perspective helps travelers compare destinations and choose the best months to travel based on aggregated climate comfort.
+
+---
+
+### 🏙️ Local View: *What’s the best time to visit a specific city?*
 
 ![Local_Toetrandro_Dashboard](doc/dashboard/local.png)
 
-### Key Insights Displayed:
+This city-specific dashboard allows users to select a city, month, and year to explore detailed comfort trends. It answers:
 
-- 🏆 **City with Highest Annual Comfort Score**: Mahajanga
-- 📅 **Total Ideal Days Recorded**: 688
-- 🌟 **Best Cities to Visit**: Ranked by average comfort score
-- 📊 **Top 3 Cities with Most Ideal Days**: Toliara, Mahajanga, Paris
-- 📆 **Best Months to Travel**: June, July, and September
-- ❄️ **Seasonal Comfort by City**: Compare comfort scores across seasons
+- 📌 **What is the most ideal month to visit this city?**
+- 📅 **How many ideal days occurred in the selected year?**
+- 📊 **What proportion of days were ideal vs. not ideal?**
+- 📈 **How has the comfort score evolved over the years?**
+- 🔄 **How does the number of ideal days change month by month?**
+- 🕰️ **Is the city becoming more or less comfortable over time?**
 
-> This dashboard helps travelers identify the most comfortable times and places to visit, based on real weather data.
+> For example, selecting **Mahajanga** in **2025** reveals:
+> - ✅ **June** is the most ideal month
+> - 📅 **26 ideal days** recorded that year
+> - 📊 **40.4%** of days were ideal
+> - 📈 A steady increase in comfort score from 2020 to 2025
+> - 🔄 Monthly breakdown showing **June** peaking with 12 ideal days
+
+This view empowers travelers to make informed decisions based on historical and real-time weather trends for their destination of interest.
 
 ---
 
@@ -171,4 +191,3 @@ Or navigate through the city that interests you :
 ## 📄 License
 
 This project is licensed under the MIT License.
-```
