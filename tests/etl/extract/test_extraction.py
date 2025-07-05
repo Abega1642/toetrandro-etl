@@ -1,6 +1,9 @@
+import json
+import shutil
+import tempfile
+import unittest
+from pathlib import Path
 from unittest.mock import patch
-
-import pytest
 
 from src.core.base import Process
 from src.core.extraction import Extract
@@ -35,40 +38,63 @@ DUMMY_WEATHER_INVALID = {"current": {"temp": 25}}
 CITIES_PATH = "test_city.json"
 
 
-class TestExtract:
-    def test_init_extract_class(self):
-        extractor = Extract(cities_path=CITIES_PATH)
-        assert isinstance(extractor, Process)
-        assert extractor.cities[0]["name"] == "Testville"
+class TestExtract(unittest.TestCase):
+    def setUp(self):
+        self.temp_dir = Path(tempfile.mkdtemp())
+        self.test_city_path = self.temp_dir / CITIES_PATH
+        with open(self.test_city_path, "w") as f:
+            json.dump([{"name": "Testville", "lat": 12.34, "lon": 56.78}], f)
 
+    def tearDown(self):
+        shutil.rmtree(self.temp_dir)
+
+    @patch("src.core.extraction.Variable.get", return_value="dummy_api_key")
+    def test_init_extract_class(self, mock_var):
+        extractor = Extract(cities_path=self.test_city_path)
+        self.assertIsInstance(extractor, Process)
+        self.assertEqual(extractor.cities[0]["name"], "Testville")
+
+    @patch("src.core.extraction.Variable.get", return_value="dummy_api_key")
     @patch("src.core.extraction.requests.Session.get")
-    def test_fetch_weather_success(self, mock_get):
+    def test_fetch_weather_success(self, mock_get, mock_var):
         mock_get.return_value.status_code = 200
         mock_get.return_value.json.return_value = DUMMY_3H_FORECAST
-        extractor = Extract(cities_path=CITIES_PATH)
+        extractor = Extract(cities_path=self.test_city_path)
         result = extractor.fetch_weather(12.34, 56.78)
-        assert "list" in result
-        assert isinstance(result["list"], list)
+        self.assertIn("list", result)
+        self.assertIsInstance(result["list"], list)
 
+    @patch("src.core.extraction.Variable.get", return_value="dummy_api_key")
     @patch("src.core.extraction.requests.Session.get")
-    def test_fetch_weather_failure(self, mock_get):
+    def test_fetch_weather_failure(self, mock_get, mock_var):
         mock_get.side_effect = Exception("API error")
-        extractor = Extract(cities_path=CITIES_PATH)
-        with pytest.raises(Exception, match="API error"):
+        extractor = Extract(cities_path=self.test_city_path)
+        with self.assertRaises(Exception) as context:
             extractor.fetch_weather(12.34, 56.78)
+        self.assertIn("API error", str(context.exception))
 
-    def test_save_skips_missing_forecast_data(self, tmp_path, caplog):
-        output_dir = tmp_path / "raw"
-        output_dir.mkdir()
-        extractor = Extract(cities_path=CITIES_PATH, output_dir=output_dir)
-        extractor.save("Testville", DUMMY_WEATHER_INVALID)
-        assert "Skipping" in caplog.text
-        assert len(list(output_dir.glob("*.csv"))) == 0
+    @patch("src.core.extraction.Variable.get", return_value="dummy_api_key")
+    def test_save_skips_missing_forecast_data(self, mock_var):
+        extractor = Extract(cities_path=self.test_city_path)
+        extractor.output_dir = self.temp_dir / "raw"
+        extractor.output_dir.mkdir(parents=True)
 
+        with self.assertLogs("src.core.extraction", level="WARNING") as cm:
+            extractor.save("Testville", DUMMY_WEATHER_INVALID)
+            self.assertTrue(any("Skipping" in msg for msg in cm.output))
+
+        saved_files = list(extractor.output_dir.rglob("*.csv"))
+        self.assertEqual(len(saved_files), 0)
+
+    @patch("src.core.extraction.Variable.get", return_value="dummy_api_key")
     @patch("src.core.extraction.Extract.fetch_weather", return_value=DUMMY_3H_FORECAST)
     @patch("src.core.extraction.Extract.save")
-    def test_apply_full_pipeline(self, mock_save, mock_fetch):
-        extractor = Extract(cities_path=CITIES_PATH)
+    def test_apply_full_pipeline(self, mock_save, mock_fetch, mock_var):
+        extractor = Extract(cities_path=self.test_city_path)
         extractor.apply()
         mock_fetch.assert_called_once()
         mock_save.assert_called_once()
+
+
+if __name__ == "__main__":
+    unittest.main()
