@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 
 import pandas as pd
@@ -33,6 +34,9 @@ class FinalMerge(Process):
             if output_path
             else base_dir / "data" / "merged" / "ready_data.csv"
         )
+        self.migration_copy_path = (
+            base_dir / "resources" / "db" / "migration" / "ready_data.csv"
+        )
 
     def apply(self) -> pd.DataFrame:
         logger.info("🔄 FinalMerge: Starting merge process.")
@@ -40,6 +44,11 @@ class FinalMerge(Process):
         logger.info(
             f"✅ FinalMerge: Merge completed. Final dataset contains {len(merged_df)} rows."
         )
+        shutil.copy(self.output_path, self.migration_copy_path)
+        logger.info(
+            f"📦 Copied ready_data.csv to migration folder: {self.migration_copy_path}"
+        )
+
         return merged_df
 
     def _merge(self) -> pd.DataFrame:

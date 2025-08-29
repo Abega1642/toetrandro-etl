@@ -1,4 +1,4 @@
-# Core Data Tools
+pyway
 pandas>=2.2.2
 requests>=2.32.4
 python-dotenv>=1.0.1
@@ -7,3 +7,4 @@ pytest~=8.4.1
 geopy~=2.4.1
 geocoder~=1.38.1
 psycopg2-binary~=2.9.10
+testcontainers

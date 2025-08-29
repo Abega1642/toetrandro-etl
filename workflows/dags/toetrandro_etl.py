@@ -33,12 +33,12 @@ db_config = json.loads(Variable.get("toetrandro_db_config"))
 
 
 with DAG(
-    dag_id="G6",
+    dag_id="toetrandro_etl_pipeline",
     default_args=default_args,
     schedule="@daily",
     catchup=False,
     max_active_runs=1,
-    tags=["g6", "etl"],
+    tags=["toetrandro_etl_pipeline", "etl"],
 ) as dag:
 
     def run_city_config():
