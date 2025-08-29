@@ -1,0 +1,2 @@
+city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at,is_ideal_temp,is_low_rain,is_low_wind,is_ideal_humidity,comfort_score,is_ideal_day,month,year,day_of_week
+Tokyo,2025-07-13 20:44:09.199167,2025-07-13 22:35:31,2025-07-14 12:57:36,25.845,25.485,25.845,26.73,1003,86,4.08,51.5,5.404999999999999,73.5,0.705,0.175,Rain,light rain,,2025-07-13 20:44:09.199618,True,False,True,False,0.6000000000000001,False,July,2025,Sunday

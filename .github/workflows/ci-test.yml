@@ -1,0 +1,64 @@
+name: CI - Run tests
+
+on:
+  push:
+    branches: [prod, preprod]
+  pull_request:
+    branches: [prod, preprod]
+
+jobs:
+  airflow-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy .env.template to .env
+        run: cp .env.template .env
+
+      - name: Create Docker network
+        run: docker network create airflow-ci-net
+
+      - name: Start Postgres container
+        run: |
+          docker run -d \
+            --name postgres-ci \
+            --network airflow-ci-net \
+            -e POSTGRES_USER=airflow \
+            -e POSTGRES_PASSWORD=airflow \
+            -e POSTGRES_DB=airflow \
+            -p 5432:5432 \
+            postgres:15
+
+      - name: Wait for Postgres to be ready
+        run: |
+          for i in {1..10}; do
+            docker exec postgres-ci pg_isready -U airflow && break
+            echo "Waiting for Postgres..."
+            sleep 5
+          done
+
+      - name: Build Airflow Docker image
+        run: docker build -t airflow-ci-test .
+
+      - name: Initialize Airflow DB
+        run: |
+          docker run --network airflow-ci-net \
+            -e AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres-ci:5432/airflow \
+            -e AIRFLOW__CORE__FERNET_KEY=dummy_fernet_key_here \
+            airflow-ci-test airflow db migrate
+
+      - name: Run Airflow tests inside container
+        run: |
+          docker run --rm \
+            --network airflow-ci-net \
+            -v ${{ github.workspace }}/tests:/opt/airflow/tests \
+            -v ${{ github.workspace }}/workflows:/opt/airflow/workflows \
+            -v ${{ github.workspace }}/src:/opt/airflow/src \
+            -v ${{ github.workspace }}/config:/opt/airflow/config \
+            -e AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres-ci:5432/airflow \
+            -e AIRFLOW__CORE__FERNET_KEY=dummy_fernet_key_here \
+            -e PYTHONPATH=/opt/airflow/src:/opt/airflow/workflows \
+            airflow-ci-test python -m unittest discover -s /opt/airflow/tests
+      

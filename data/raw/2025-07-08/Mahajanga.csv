@@ -1,0 +1,2 @@
+city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at
+Mahajanga,2025-07-08 13:01:33.024369,2025-07-08 06:22:34,2025-07-08 17:36:37,26.3225,25.72,26.3225,26.25,1019.75,50.25,3.7199999999999998,161,6.83,75,0.052500000000000005,0.05,Clouds,scattered clouds,,2025-07-08 13:01:33.024664

@@ -1,0 +1,2 @@
+city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at,is_ideal_temp,is_low_rain,is_low_wind,is_ideal_humidity,comfort_score,is_ideal_day,month,year,day_of_week
+Toliara,2025-07-08 13:01:32.060741,2025-07-08 06:47:21,2025-07-08 17:33:01,22.7425,22.51,22.7425,22.67,1025.5,59.75,8.8775,156.75,12.3,0,0,0.0,Clear,clear sky,,2025-07-08 13:01:32.061039,True,True,False,True,0.7999999999999999,False,July,2025,Tuesday

@@ -1,0 +1,2 @@
+city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at,is_ideal_temp,is_low_rain,is_low_wind,is_ideal_humidity,comfort_score,is_ideal_day,month,year,day_of_week
+Toamasina,2025-07-14 14:01:08.288730,2025-07-14 06:14:10,2025-07-14 17:21:50,23.38,21.725,23.38,23.6575,1021.5,77.5,3.66,188.5,4.245,18.25,0.0675,0.0,Clouds,few clouds,,2025-07-14 14:01:08.289200,True,True,True,False,0.8999999999999999,True,July,2025,Monday

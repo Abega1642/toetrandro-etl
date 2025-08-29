@@ -1,13 +1,5 @@
 import json
-import os
-import sys
 from datetime import datetime
-
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-
-if project_root not in sys.path:
-    sys.path.insert(0, project_root)
-
 
 from airflow import DAG
 from airflow.models import Variable
@@ -26,18 +18,27 @@ default_args = {
     "retries": 3,
 }
 
-city_list = ["New York", "Paris", "Tokyo", "Toliara", "Mahajanga", "Toamasina"]
+city_list = [
+    "New York",
+    "Paris",
+    "Tokyo",
+    "Toliara",
+    "Mahajanga",
+    "Toamasina",
+    "Fianarantsoa",
+    "Morondava",
+]
 
 db_config = json.loads(Variable.get("toetrandro_db_config"))
 
 
 with DAG(
-    dag_id="toetrandro_etl_pipeline",
+    dag_id="G6",
     default_args=default_args,
     schedule="@daily",
     catchup=False,
     max_active_runs=1,
-    tags=["toetrandro", "etl"],
+    tags=["g6", "etl"],
 ) as dag:
 
     def run_city_config():

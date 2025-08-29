@@ -1,0 +1,2 @@
+city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at
+Paris,2025-07-18 15:49:29.675152,2025-07-18 07:06:23,2025-07-18 22:46:54,29.723333333333333,29.723333333333333,29.93,28.73,1009,31,2.646666666666667,184,5.426666666666667,64.66666666666667,0,0.0,Clouds,scattered clouds,,2025-07-18 15:49:29.675479

@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api-server:
+    build: .
+    restart: always
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    command: api-server
+
+  scheduler:
+    build: .
+    restart: always
+    depends_on:
+      - api-server
+    env_file:
+      - .env
+    command: scheduler
+
+  dag-processor:
+    build: .
+    restart: always
+    depends_on:
+      - api-server
+    env_file:
+      - .env
+    command: dag-processor
+
+volumes:
+  pgdata:

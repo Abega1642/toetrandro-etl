@@ -1,0 +1,2 @@
+city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at
+Toamasina,2025-07-16 05:41:13.556182,2025-07-15 20:13:54,2025-07-16 07:22:31,22.593333333333334,21.063333333333333,22.593333333333334,22.85,1021.3333333333334,74.33333333333333,3.6366666666666667,185,4.556666666666667,9.666666666666666,0.006666666666666667,0.0,Clear,clear sky,,2025-07-16 05:41:13.556893

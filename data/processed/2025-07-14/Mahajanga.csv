@@ -1,0 +1,2 @@
+city,timestamp,sunrise,sunset,temp_C,temp_min_C,temp_max_C,feels_like_C,pressure,humidity,wind_speed,wind_deg,wind_gust,cloudiness,precipitation_prob,rain_1d,weather_main,weather_description,summary,extracted_at,is_ideal_temp,is_low_rain,is_low_wind,is_ideal_humidity,comfort_score,is_ideal_day,month,year,day_of_week
+Mahajanga,2025-07-14 14:01:07.968358,2025-07-14 06:22:19,2025-07-14 17:38:25,28.3575,25.83,28.3575,28.36,1017.5,50,1.8225,216.5,3.1625,25,0.03,0.0,Clouds,few clouds,,2025-07-14 14:01:07.968997,False,True,True,True,0.6,False,July,2025,Monday

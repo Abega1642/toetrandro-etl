@@ -1,10 +1,11 @@
 name: Pylint code Check
 
-on:
   push:
     branches:
-      - main
+      - '**'
   pull_request:
+    branches:
+      - '**'
 
 jobs:
   pylint-docstrings:
