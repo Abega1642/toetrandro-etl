@@ -6,7 +6,7 @@ locations = pd.read_csv("locations.csv")
 weather = pd.read_csv("../data/merge/all_weather_data.csv")
 
 
-df = weather.merge(locations, on="location_id")
+df = weather.merge(locations, on="location_id", how="left", validate="many_to_one")
 
 df["temp_C"] = df["temperature_2m_mean (°C)"]
 df["temp_min_C"] = df["temperature_2m_min (°C)"]
