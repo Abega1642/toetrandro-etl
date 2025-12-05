@@ -27,4 +27,4 @@ jobs:
 
       - name: Run tests
         run: |
-          python -m unittest discover -s tests -p "test_*.py" -v -k "not test_toetrandro_etl"
+          python -m unittest discover -s tests -p "test_*.py"
