@@ -21,9 +21,15 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: |
+        run: |  
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install apache-airflow==3.0.1
+          airflow db migrate
+
+      - name: Set Airflow Variables for CI
+        run: |  
+          airflow variables set OPENWEATHER_API_KEY ${{ secrets.OPENWEATHER_API_KEY }}
 
       - name: Run tests
         run: |
